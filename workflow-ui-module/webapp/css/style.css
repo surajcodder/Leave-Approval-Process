@@ -1,0 +1,130 @@
+.fadeIn {
+    animation: fadeInUp 0.5s ease-in-out;
+    opacity: 0;
+    animation-fill-mode: forwards;
+  }
+  
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  .animated-icon {
+    animation: pulse 1.5s infinite;
+    display: inline-block;
+  }
+  
+  @keyframes pulse {
+    0%   { transform: scale(1); opacity: 1; }
+    50%  { transform: scale(1.2); opacity: 0.7; }
+    100% { transform: scale(1); opacity: 1; }
+  }
+  /* Enter your custom styles here */
+/* Enter your custom styles here */
+sapMListTblRow .sapMCb {
+  display: none;
+}
+.customSpacingTop{
+  margin-top: 50px;
+}
+.customLargeText {
+  font-size: 1.0rem; /* Adjust the size as needed, e.g., 1.2rem, 1.5rem, or 20px */
+  font-weight: bold;
+  color: black;
+}
+.customTitleSpacing {
+  margin-bottom: 35px; /* Adjust this value as needed */
+}
+
+
+.customLabelColor {
+  color:black; /* Replace this with your desired color */
+}
+
+.customVehicleSubSection {
+  max-height: 400px; 
+  overflow-y: auto; 
+  height: auto;
+ 
+}
+.sapMListTblRow .sapMCb {
+  display: none;
+}
+
+
+/* / General styling for the dialog container / */
+.commentHistory {
+  max-height: 600px;
+  padding: 10px;
+}
+
+.chatContainer {
+  overflow: auto;
+  display: flex;
+  flex-direction: column-reverse;
+}
+
+/* / Styling for the chat list / */
+.chatList {
+  background-color: #f7f7f7;
+  padding: 10px;
+  overflow-y: auto;
+  height: 100%;
+}
+
+/* / Chat message container / */
+.messageContainer {
+  padding: 3px;
+  margin: 10px 0;
+  display: flex;
+  align-items: flex-start;
+}
+
+/* / Styles for customer messages / */
+.messageHeader {
+  background-color: #efefef;
+  color: #0e0101;
+  border-radius: 10px;
+  padding: 10px;
+  width: 60%;
+  max-width: 60%;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* / Styles for Mahindra messages / */
+.mahindraMessage {
+  align-self: flex-end;
+  background: linear-gradient(45deg, #ee087f, #dd2a7b, #515bd4);
+  color: #fff;
+  border-radius: 10px;
+  padding: 10px;
+  width: 50%;
+  max-width: 60%;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* / Styling for chat text / */
+.messageText {
+  font-size: 1rem;
+  color: black;
+  margin-bottom: 5px;
+}
+
+/* / Styling for message user and time / */
+.messageUser, .messageTime {
+  font-size: 0.8rem;
+  color: #999;
+}
+
+.sapMListItems, 
+.sapMLIBSeparator, 
+.sapMLIBBorder, 
+.sapMLIB {
+  border: none !important;
+  box-shadow: none !important; 
+}

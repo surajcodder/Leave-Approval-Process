@@ -1,0 +1,92 @@
+_schema-version: "3.2"
+ID: Leave_Approval_Process
+version: 0.0.1
+modules:
+- name: Leave_Approval_Process-destination-content
+  type: com.sap.application.content
+  requires:
+  - name: Leave_Approval_Process-destination-service
+    parameters:
+      content-target: true
+  - name: Leave_Approval_Process_html_repo_host
+    parameters:
+      service-key:
+        name: Leave_Approval_Process_html_repo_host-key
+  - name: uaa_Leave_Approval_Process
+    parameters:
+      service-key:
+        name: uaa_Leave_Approval_Process-key
+  parameters:
+    content:
+      subaccount:
+        destinations:
+        - Name: manageleave_Leave_Approval_Process_html_repo_host
+          ServiceInstanceName: Leave_Approval_Process-html5-app-host-service
+          ServiceKeyName: Leave_Approval_Process_html_repo_host-key
+          sap.cloud.service: manageleave
+        - Authentication: OAuth2UserTokenExchange
+          Name: manageleave_uaa_Leave_Approval_Process
+          ServiceInstanceName: Leave_Approval_Process-xsuaa-service
+          ServiceKeyName: uaa_Leave_Approval_Process-key
+          sap.cloud.service: manageleave
+        existing_destinations_policy: ignore
+  build-parameters:
+    no-source: true
+- name: Leave_Approval_Process-app-content
+  type: com.sap.application.content
+  path: .
+  requires:
+  - name: Leave_Approval_Process_html_repo_host
+    parameters:
+      content-target: true
+  build-parameters:
+    build-result: resources
+    requires:
+    - artifacts:
+      - workflowuimodule.zip
+      name: workflowuimodule
+      target-path: resources/
+- name: workflowuimodule
+  type: html5
+  path: workflow-ui-module
+  build-parameters:
+    build-result: dist
+    builder: custom
+    commands:
+    - npm install
+    - npm run build:cf
+    supported-platforms: []
+resources:
+- name: Leave_Approval_Process-destination-service
+  type: org.cloudfoundry.managed-service
+  parameters:
+    config:
+      HTML5Runtime_enabled: true
+      init_data:
+        subaccount:
+          destinations:
+          - Authentication: NoAuthentication
+            Name: ui5
+            ProxyType: Internet
+            Type: HTTP
+            URL: https://ui5.sap.com
+          existing_destinations_policy: update
+      version: 1.0.0
+    service: destination
+    service-name: Leave_Approval_Process-destination-service
+    service-plan: lite
+- name: Leave_Approval_Process_html_repo_host
+  type: org.cloudfoundry.managed-service
+  parameters:
+    service: html5-apps-repo
+    service-name: Leave_Approval_Process-html5-app-host-service
+    service-plan: app-host
+- name: uaa_Leave_Approval_Process
+  type: org.cloudfoundry.managed-service
+  parameters:
+    path: ./xs-security.json
+    service: xsuaa
+    service-name: Leave_Approval_Process-xsuaa-service
+    service-plan: application
+parameters:
+  deploy_mode: html5-repo

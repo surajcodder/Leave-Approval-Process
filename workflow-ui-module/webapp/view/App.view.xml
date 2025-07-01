@@ -1,0 +1,278 @@
+<mvc:View
+    controllerName="workflowuimodule.controller.App"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:core="sap.ui.core"
+    xmlns="sap.m"
+    xmlns:uxap="sap.uxap"
+    xmlns:form="sap.ui.layout.form"
+    xmlns:upload="sap.m.upload"
+    displayBlock="true"
+>
+    <uxap:ObjectPageLayout
+        id="leaveRequestObjectPage"
+        showTitleInHeaderContent="false"
+        headerTitle=""
+        useIconTabBar="false"
+        alwaysShowContentHeader="false"
+    >
+        <!-- Section: Leave Request Details -->
+        <uxap:sections>
+            <uxap:ObjectPageSection
+                id="leaveDetailsSection"
+                title="Leave Request Details"
+                titleUppercase="false"
+            >
+                <uxap:subSections>
+                    <uxap:ObjectPageSubSection
+                        id="leaveDetailsSubSection"
+                        titleUppercase="false"
+                    >
+                        <form:SimpleForm
+                            id="leave-request-form"
+                            editable="false"
+                            layout="ResponsiveGridLayout"
+                            singleContainerFullSize="false"
+                        >
+                            <form:content>
+                                <Label
+                                    id="_IDGenLabel"
+                                    text="Employee Name"
+                                />
+                                <Input
+                                    id="_IDGenInput"
+                                    value="{context>/employeeName}"
+                                    editable="false"
+                                />
+
+                                <Label
+                                    id="_IDGenLabel1"
+                                    text="Leave Type"
+                                />
+                                <Input
+                                    id="_IDGenInput1"
+                                    value="{context>/leaveType}"
+                                    editable="false"
+                                />
+
+                                <Label
+                                    id="_IDGenLabel2"
+                                    text="Start Date"
+                                />
+                                <Input
+                                    id="_IDGenInput2"
+                                    value="{context>/startDate}"
+                                    editable="false"
+                                />
+
+                                <Label
+                                    id="_IDGenLabel3"
+                                    text="End Date"
+                                />
+                                <Input
+                                    id="_IDGenInput3"
+                                    value="{context>/endDate}"
+                                    editable="false"
+                                />
+
+                                <Label
+                                    id="_IDGenLabel4"
+                                    text="Reason"
+                                />
+                                <TextArea
+                                    id="_IDGenTextArea"
+                                    value="{context>/reason}"
+                                    editable="false"
+                                    growing="true"
+                                    rows="3"
+                                />
+
+                                <Label
+                                    id="_IDGenLabel5"
+                                    text="Status"
+                                />
+                                <Input
+                                    id="_IDGenInput4"
+                                    value="{context>/status}"
+                                    editable="false"
+                                />
+                            </form:content>
+                        </form:SimpleForm>
+                    </uxap:ObjectPageSubSection>
+                </uxap:subSections>
+            </uxap:ObjectPageSection>
+
+            <!-- Section: Attachments -->
+            <uxap:ObjectPageSection
+                id="attachmentsSection"
+                title="Attachments"
+                titleUppercase="false"
+            >
+                <uxap:subSections>
+                    <uxap:ObjectPageSubSection
+                        id="attachmentsSubSection"
+                        titleUppercase="false"
+                    >
+                        <upload:UploadSet
+                            id="uploadSet"
+                            uploadEnabled="false"
+                            items="{path: 'myFile>/pdf', templateShareable: false}"
+                        >
+                            <upload:toolbar />
+                            <upload:items>
+                                <upload:UploadSetItem
+                                    id="_IDGenUploadSetItem"
+                                    fileName="{myFile>fileName}"
+                                    mediaType="{myFile>mediaType}"
+                                    url="{myFile>content}"
+                                    enabledEdit="false"
+                                    enabledRemove="false"
+                                    visibleEdit="false"
+                                    visibleRemove="false"
+                                    openPressed="onOpenPressed"
+                                >
+                                    <upload:attributes>
+                                        <ObjectAttribute
+                                            id="_IDGenObjectAttribute1"
+                                            title="Uploaded By"
+                                            text="{myModel>createdBy}"
+                                        />
+                                        <ObjectAttribute
+                                            id="_IDGenObjectAttribute2"
+                                            title="Uploaded On"
+                                            text="{myModel>createdAt}"
+                                        />
+                                        <ObjectAttribute
+                                            id="_IDGenObjectAttribute3"
+                                            title="File Size"
+                                            text="{myFile>size}"
+                                        />
+                                    </upload:attributes>
+                                </upload:UploadSetItem>
+                            </upload:items>
+                        </upload:UploadSet>
+                    </uxap:ObjectPageSubSection>
+                </uxap:subSections>
+            </uxap:ObjectPageSection>
+        </uxap:sections>
+        <uxap:sections>
+            <!-- Existing Leave Request and Attachments Sections -->
+
+            <!-- ⬇️ Add This New Section for Comments -->
+            <uxap:ObjectPageSection
+                id="commentSection"
+                title="Comments"
+                titleUppercase="false"
+            >
+                <uxap:subSections>
+                    <uxap:ObjectPageSubSection
+                        id="commentSubSection"
+                        titleUppercase="false"
+                    >
+                        <VBox
+                            id="_IDGenVBox"
+                            width="100%"
+                        >
+                            <Toolbar id="_IDGenToolbar">
+                                <Title
+                                    id="_IDGenTitle1"
+                                    text="Enter Comments"
+                                />
+                                <ToolbarSpacer id="_IDGenToolbarSpacer" />
+                                <Button
+                                    id="_IDGenButton"
+                                    text="Browse History"
+                                    press="onBrowseHistoryPress"
+                                />
+                            </Toolbar>
+
+                            <TextArea
+                                id="commentInput"
+                                value="{context>/comment}"
+                                showExceededText="true"
+                                maxLength="1000"
+                                width="100%"
+                                height="120px"
+                                change="_PostComment"
+                            />
+                        </VBox>
+                    </uxap:ObjectPageSubSection>
+                </uxap:subSections>
+            </uxap:ObjectPageSection>
+        </uxap:sections>
+    </uxap:ObjectPageLayout>
+    <Dialog
+        id="commentHistoryDialog"
+        title="Comment History"
+        stretch="false"
+        contentWidth="50%"
+        contentHeight="400px"
+        afterOpen="onDialogOpen"
+    >
+        <customHeader>
+            <Toolbar id="_IDGenToolbar1">
+                <Title
+                    id="_IDGenTitle"
+                    text="Comment History"
+                />
+                <ToolbarSpacer id="_IDGenToolbarSpacer1" />
+                <Button
+                    id="_IDGenButton1"
+                    text="Close"
+                    press="onCloseHistoryDialog"
+                />
+            </Toolbar>
+        </customHeader>
+
+        <ScrollContainer
+            id="_IDGenScrollContainer"
+            width="100%"
+            height="400px"
+            vertical="true"
+        >
+            <VBox
+                id="_IDGenVBox1"
+                width="100%"
+                class="comment-box"
+            >
+                <List
+                    id="chatList"
+                    items="{path: 'myComments>/Comments', parameters: {$orderby: 'createdAt desc'}}"
+                    class="chatList"
+                >
+                    <CustomListItem
+                        id="_IDGenCustomListItem"
+                        class="items"
+                    >
+                        <HBox
+                            id="_IDGenHBox"
+                            justifyContent="{= ${myComments>user} === 'C' ? 'Start' : 'End'}"
+                            alignItems="{= ${myComments>user} === 'C' ? 'Start' : 'End'}"
+                            class="messageContainer"
+                        >
+                            <VBox
+                                id="_IDGenVBox2"
+                                class="messageHeader"
+                            >
+                                <Text
+                                    id="_IDGenText1"
+                                    text="{myComments>user}"
+                                    class="messageTime"
+                                />
+                                <Text
+                                    id="_IDGenText2"
+                                    text="{myComments>commentsText}"
+                                    class="messageText"
+                                />
+                                <Text
+                                    id="_IDGenText3"
+                                    text="{myComments>createdAt}"
+                                    class="messageTime"
+                                />
+                            </VBox>
+                        </HBox>
+                    </CustomListItem>
+                </List>
+            </VBox>
+        </ScrollContainer>
+    </Dialog>
+</mvc:View>
