@@ -201,6 +201,11 @@
                     "type": "string",
                     "title": "comment",
                     "description": "Comment to Finance"
+                },
+                "quotedComment": {
+                    "type": "string",
+                    "title": "comment after Convert",
+                    "description": "Comment to Finance"
                 }
             }
         },

@@ -55,25 +55,44 @@ sap.ui.define(
                             var oRootControl = this.getRootControl();
                             var oTextArea = oRootControl.byId("commentInput");
 
-                            // Initialize the flag to control whether to proceed
+                            // Initialize the flag
                             let canProceed = true;
-                            // Validate comment field
+                            let sCommentText = "";
+
                             if (oTextArea) {
-                                var sCommentText = oTextArea.getValue();
-                                console.log(sCommentText);
-                                if (!sCommentText.trim()) {
+                                sCommentText = oTextArea.getValue().trim(); // Trim leading/trailing whitespace
+
+                                if (!sCommentText) {
                                     sap.m.MessageToast.show("Comment is required to proceed.");
                                     oTextArea.setValueState(sap.ui.core.ValueState.Error);
                                     canProceed = false;
                                 } else {
                                     oTextArea.setValueState(sap.ui.core.ValueState.None);
+
+                                    // ✅ Escape single quotes (') by replacing them with two single quotes ('')
+                                    const escapedText = sCommentText.replace(/'/g, "''");
+                                    debugger
+                                    // ✅ Wrap with single quotes ONLY if not already quoted
+                                    if (!/^'.*'$/.test(escapedText)) {
+                                        debugger
+                                        sCommentText = `'${escapedText}'`;
+                                    } else {
+                                        sCommentText = escapedText;
+                                    }
+
+                                    console.log("Formatted quoted comment:", sCommentText);
                                 }
                             }
+
                             if (canProceed) {
                                 debugger
+                                // ✅ Set the safely quoted comment to the context model
                                 this.getModel("context").setProperty("/comment", sCommentText);
+
+                                // Complete the task
                                 this.completeTask(true, approveOutcomeId);
                             }
+
                         },
                         this
                     );
