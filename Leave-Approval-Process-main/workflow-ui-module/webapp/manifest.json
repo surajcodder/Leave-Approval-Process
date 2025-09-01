@@ -1,0 +1,214 @@
+{
+    "_version": "1.26.0",
+    "sap.app": {
+        "id": "workflowuimodule",
+        "type": "application",
+        "i18n": "i18n/i18n.properties",
+        "applicationVersion": {
+            "version": "0.0.1"
+        },
+        "title": "{{appTitle}}",
+        "description": "{{appDescription}}",
+        "resources": "resources.json",
+        "sourceTemplate": {
+            "id": "@sap/generator-fiori:basic",
+            "version": "1.8.4",
+            "toolsId": "bdaeee59-a4e7-4790-9df6-a01f61e27cf3"
+        },
+        "dataSources": {
+            "mainService": {
+                "uri": "/sap/opu/odata/",
+                "type": "OData",
+                "settings": {
+                    "annotations": [],
+                    "localUri": "localService/metadata.xml",
+                    "odataVersion": "2.0"
+                }
+            }
+        }
+    },
+    "sap.ui": {
+        "technology": "UI5",
+        "icons": {
+            "icon": "",
+            "favIcon": "",
+            "phone": "",
+            "phone@2": "",
+            "tablet": "",
+            "tablet@2": ""
+        },
+        "deviceTypes": {
+            "desktop": true,
+            "tablet": true,
+            "phone": true
+        }
+    },
+    "sap.ui5": {
+        "flexEnabled": true,
+        "dependencies": {
+            "minUI5Version": "1.82.2",
+            "libs": {
+                "sap.m": {},
+                "sap.ui.core": {},
+                "sap.f": {},
+                "sap.suite.ui.generic.template": {},
+                "sap.ui.comp": {},
+                "sap.ui.generic.app": {},
+                "sap.ui.table": {},
+                "sap.ushell": {}
+            }
+        },
+        "contentDensities": {
+            "compact": true,
+            "cozy": true
+        },
+        "models": {
+            "i18n": {
+                "type": "sap.ui.model.resource.ResourceModel",
+                "settings": {
+                    "bundleName": "workflowuimodule.i18n.i18n"
+                }
+            },
+            "": {
+                "dataSource": "mainService",
+                "preload": true,
+                "settings": {}
+            }
+        },
+        "resources": {
+            "css": [
+                {
+                    "uri": "css/style.css"
+                }
+            ]
+        },
+        "routing": {
+            "config": {
+                "routerClass": "sap.m.routing.Router",
+                "viewType": "XML",
+                "async": true,
+                "viewPath": "workflowuimodule.view",
+                "controlAggregation": "pages",
+                "controlId": "app",
+                "clearControlAggregation": false
+            },
+            "routes": [
+                {
+                    "name": "RouteMyTaskUI",
+                    "pattern": ":?query:",
+                    "target": [
+                        "TargetMyTaskUI"
+                    ]
+                }
+            ],
+            "targets": {
+                "TargetMyTaskUI": {
+                    "viewType": "XML",
+                    "transition": "slide",
+                    "clearControlAggregation": false,
+                    "viewId": "MyTaskUI",
+                    "viewName": "MyTaskUI"
+                }
+            }
+        },
+        "rootView": {
+            "viewName": "workflowuimodule.view.App",
+            "type": "XML",
+            "async": true,
+            "id": "App"
+        }
+    },
+    "sap.cloud": {
+        "public": true,
+        "service": "manageleave"
+    },
+    "sap.bpa.task": {
+        "_version": "1.0.0",
+        "outcomes": [
+            {
+                "id": "approve",
+                "label": "Approve"
+            },
+            {
+                "id": "reject",
+                "label": "Reject"
+            }
+        ],
+        "inputs": {
+            "$schema": "http://json-schema.org/draft-07/schema",
+            "title": "input",
+            "type": "object",
+            "required": [
+                "employeeName",
+                "leaveType",
+                "startDate",
+                "endDate",
+                "reason",
+                "status"
+            ],
+            "properties": {
+                "employeeName": {
+                    "type": "string",
+                    "title": "Employee Name",
+                    "description": "Name of the employee applying for leave"
+                },
+                "leaveType": {
+                    "type": "string",
+                    "title": "Leave Type",
+                    "description": "Type of leave requested"
+                },
+                "startDate": {
+                    "type": "string",
+                    "title": "Start Date",
+                    "description": "Leave start date"
+                },
+                "endDate": {
+                    "type": "string",
+                    "title": "End Date",
+                    "description": "Leave end date"
+                },
+                "reason": {
+                    "type": "string",
+                    "title": "Reason",
+                    "description": "Reason for the leave"
+                },
+                "status": {
+                    "type": "string",
+                    "title": "Status",
+                    "description": "Leave request status"
+                },
+                "file": {
+                    "type": "string",
+                    "title": "File",
+                    "description": "Base64-encoded file content"
+                },
+                "Comments": {
+                    "type": "string",
+                    "title": "Comments",
+                    "description": "Comments Content"
+                }
+                
+            }
+        },
+        "outputs": {
+            "$schema": "http://json-schema.org/draft-07/schema",
+           "type": "object",
+            "required": [
+                "comment"
+            ],
+            "properties": {
+                "comment": {
+                    "type": "string",
+                    "title": "comment",
+                    "description": "Comment to Finance"
+                },
+                "quotedComment": {
+                    "type": "string",
+                    "title": "comment after Convert",
+                    "description": "Comment to Finance"
+                }
+            }
+        },
+        "category": "approval"
+    }
+}
